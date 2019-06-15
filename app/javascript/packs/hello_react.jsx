@@ -4,11 +4,30 @@
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ApolloClient from 'apollo-boost'
+import { gql } from 'apollo-boost'
+
+const client = new ApolloClient({
+  uri: 'http://localhost:3000/graphql',
+})
 
 const Hello = () => {
   const [count, setCount] = React.useState(0)
-  const node = document.getElementById('data_text')
-  console.log('node.getAttribute(`dataText`))', node.getAttribute('data'))
+
+  React.useEffect(() => {
+    const node = document.getElementById('data_text')
+    console.log('node.getAttribute(`dataText`))', node.getAttribute('data'))
+    client
+      .query({
+        query: gql`
+          {
+            testField
+          }
+        `,
+      })
+      .then(result => console.log(result))
+  }, [])
+
   return (
     <div>
       <p>{count}</p>
